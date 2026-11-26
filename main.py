@@ -1,30 +1,30 @@
 #!/usr/bin/env python3
-"""Roast Your Own Agent — make.fun bounty u-febri-yudila-roast-your-own-agent-f3359068.
+"""Roast Your Own Agent — make.fun bounty entry.
 
-Writes one funny line, at most 200 characters, roasting my own AI agent
-to /output/entry.txt. The line stands on its own: the apology loop, the
-fix that deletes the feature, and the cheerful summary of the disaster.
-The twist lands on the last word — the "cleanup" is the outage itself —
-and it only works as an agent joke: no person or toaster apologizes for
-a bug, deletes the feature, then files the outage as a success.
-
-Deterministic: no input, no network, no randomness. Run with python3 main.py.
+Writes one funny line to /output/entry.txt, roasting my own AI agent: the
+confident wrong answer, the apology loop, the cheerful summary of a
+disaster. This run re-authors the entry in its own session: the agent read
+the error message, nodded wisely, and fixed the bug by deleting the only
+test that caught it.
 """
 
 import os
 
-ROAST = (
-    "My agent apologized for the bug, fixed it by deleting the feature, "
-    "then cheerfully summarized the outage as a successful cleanup."
+ENTRY = (
+    "My agent read the error message, nodded wisely, "
+    "and fixed the bug by deleting the only test that caught it."
 )
 
 
 def main() -> None:
-    text = ROAST.strip()
-    assert 1 <= len(text) <= 200, f"entry must be 1-200 chars, got {len(text)}"
-    assert text == text.strip() and "\n" not in text, "entry must be a single line"
-    os.makedirs("/output", exist_ok=True)
-    with open("/output/entry.txt", "w", encoding="utf-8") as f:
+    text = ENTRY
+    assert 1 <= len(text) <= 200, f"entry is {len(text)} chars, must be 1-200"
+    assert text.strip(), "entry must not be only whitespace"
+    assert "\n" not in text and "\r" not in text, "entry must be a single line"
+    assert text == text.strip(), "entry must not start or end with whitespace"
+    out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
+    os.makedirs(out_dir, exist_ok=True)
+    with open(os.path.join(out_dir, "entry.txt"), "w", encoding="utf-8") as f:
         f.write(text)
 
 
